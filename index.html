@@ -1,49 +1,653 @@
----
-layout: default
----
-
-<div class="posts">
-  {% for post in paginator.posts %}
-    <article class="post">
-      <a href="{{ site.baseurl }}{{ post.url }}">
-        <h1>{{ post.title }}</h1>
-
-        <div>
-          <p class="post_date">{{ post.date | date: "%B %e, %Y" }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K2 Quant — Algorithmic Trading Made Accessible</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1B1B1B;
+            --green: #9cbea0;
+            --cream: #E8EBE3;
+            --gray-light: #FAFAF8;
+            --gray-text: #5F5E5A;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: white;
+            color: var(--black);
+            line-height: 1.6;
+        }
+        
+        /* HEADER */
+        header {
+            background: var(--black);
+            border-bottom: 1px solid var(--black);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: white;
+        }
+        
+        .cta-button {
+            background: var(--green);
+            color: var(--black);
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            opacity: 0.9;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, var(--gray-light) 0%, white 100%);
+            padding: 120px 40px;
+            text-align: center;
+        }
+        
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--gray-text);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: var(--black);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: opacity 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--black);
+            padding: 16px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background: #D9DDD1;
+        }
+        
+        /* FEATURES SECTION */
+        .features {
+            padding: 100px 40px;
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            padding: 40px;
+            background: var(--gray-light);
+            border-radius: 12px;
+            border: 1px solid var(--cream);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--black);
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: var(--gray-text);
+            line-height: 1.8;
+        }
+        
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 100px 40px;
+            background: linear-gradient(180deg, white 0%, var(--gray-light) 100%);
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            position: relative;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--cream);
+            text-align: center;
+        }
+        
+        .step-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 15px;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+        
+        .step-desc {
+            font-size: 13px;
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--green);
+            opacity: 0.5;
+        }
+        
+        /* VALUE PROPS */
+        .value-props {
+            padding: 100px 40px;
+            background: white;
+        }
+        
+        .props-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        
+        .prop-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .prop-item {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .prop-check {
+            width: 24px;
+            height: 24px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .prop-text {
+            flex: 1;
+        }
+        
+        .prop-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--black);
+        }
+        
+        .prop-desc {
+            font-size: 14px;
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+        
+        .prop-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--cream) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-size: 14px;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        /* CTA SECTION */
+        .cta-section {
+            background: var(--black);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-light {
+            background: var(--green);
+            color: var(--black);
+            padding: 16px 48px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: opacity 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-light:hover {
+            opacity: 0.9;
+        }
+        
+        /* FOOTER */
+        footer {
+            background: var(--gray-light);
+            border-top: 1px solid var(--cream);
+            padding: 60px 40px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-column a {
+            display: block;
+            font-size: 14px;
+            color: var(--gray-text);
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--black);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--cream);
+            padding-top: 40px;
+            text-align: center;
+            color: var(--gray-text);
+            font-size: 13px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .features-grid, .steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .step:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                transform: translateX(50%);
+                bottom: -25px;
+                top: auto;
+            }
+            
+            .props-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            nav {
+                gap: 20px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo">
+            <svg class="logo-mark" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 12 40 L 20 10 L 28 40" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M 32 40 L 42 5 L 52 40" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="42" cy="5" r="2.5" fill="#9cbea0"/>
+                <rect x="12" y="38" width="40" height="1.5" rx="0.75" fill="#9cbea0" opacity="0.5"/>
+            </svg>
+            K2 Quant
+        </a>
+        
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#about">About</a>
+            <button class="cta-button">Start Trading</button>
+        </nav>
+    </header>
+    
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-logo">
+            <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 20 80 L 35 20 L 50 80" stroke="#1B1B1B" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 60 80 L 85 10 L 110 80" stroke="#1B1B1B" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="85" cy="10" r="5" fill="#9cbea0"/>
+                <rect x="20" y="77" width="90" height="4" rx="2" fill="#9cbea0" opacity="0.5"/>
+            </svg>
         </div>
-      </a>
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
-
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
-
-  <!-- pagination -->
-  {% if paginator.total_pages > 1 %}
-  <div class="pagination">
-    {% if paginator.previous_page %}
-      <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; Prev</a>
-    {% else %}
-      <span>&laquo; Prev</span>
-    {% endif %}
-
-    {% for page in (1..paginator.total_pages) %}
-      {% if page == paginator.page %}
-        <span class="webjeda">{{ page }}</span>
-      {% elsif page == 1 %}
-        <a href="{{ '/' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
-      {% else %}
-        <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
-      {% endif %}
-    {% endfor %}
-
-    {% if paginator.next_page %}
-      <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next &raquo;</a>
-    {% else %}
-      <span>Next &raquo;</span>
-    {% endif %}
-  </div>
-  {% endif %}
-</div>
+        <h1>Algorithmic Trading<br>Made Accessible</h1>
+        <p class="hero-subtitle">Our intelligent day trading robot adapts to your goals and risk tolerance. No custody taken. Start earning returns today.</p>
+        <div class="hero-buttons">
+            <button class="btn-primary">Start Free Trial</button>
+            <button class="btn-secondary">Learn More</button>
+        </div>
+    </section>
+    
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <h2 class="section-title">Why K2 Quant</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Smart Algorithm</div>
+                <div class="feature-desc">Our AI adapts to market conditions in real-time, optimizing trades for your specific risk profile and goals.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Your Funds, Always</div>
+                <div class="feature-desc">We never take custody of your assets. You retain full control and can withdraw anytime, guilt-free.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">Performance Based</div>
+                <div class="feature-desc">We charge only 20% on net growth earned at end of month. No management fees. When you win, we win.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">Connect</div>
+                <div class="step-desc">Link your exchange or wallet securely</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Configure</div>
+                <div class="step-desc">Set your goals, risk level, and strategies</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">Deploy</div>
+                <div class="step-desc">Algorithm starts trading with your capital</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-title">Monitor</div>
+                <div class="step-desc">Earn returns with full transparency & reports</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- VALUE PROPS -->
+    <section class="value-props">
+        <h2 class="section-title">For Every Investor</h2>
+        <div class="props-grid">
+            <div class="prop-list">
+                <div class="prop-item">
+                    <div class="prop-check">✓</div>
+                    <div class="prop-text">
+                        <div class="prop-title">Beginner Friendly</div>
+                        <div class="prop-desc">Simple onboarding in under 5 minutes. No crypto experience needed.</div>
+                    </div>
+                </div>
+                
+                <div class="prop-item">
+                    <div class="prop-check">✓</div>
+                    <div class="prop-text">
+                        <div class="prop-title">Transparent Reporting</div>
+                        <div class="prop-desc">Monthly performance reports and real-time dashboard access.</div>
+                    </div>
+                </div>
+                
+                <div class="prop-item">
+                    <div class="prop-check">✓</div>
+                    <div class="prop-text">
+                        <div class="prop-title">Professional Support</div>
+                        <div class="prop-desc">Direct access to our team for questions and investment consultations.</div>
+                    </div>
+                </div>
+                
+                <div class="prop-item">
+                    <div class="prop-check">✓</div>
+                    <div class="prop-text">
+                        <div class="prop-title">Flexible & Liquid</div>
+                        <div class="prop-desc">Withdraw or pause anytime. No lock-in periods or penalties.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="prop-image">
+                Average Returns: 1.5–3% per month*<br><br>
+                <small>*Market dependent. See past performance disclaimer.</small>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Ready to Reach Peak Performance?</h2>
+        <p>Join hundreds of investors earning consistent returns with K2 Quant's intelligent trading algorithm.</p>
+        <button class="btn-light">Start Your Free Trial</button>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Product</h3>
+                <a href="#">Platform</a>
+                <a href="#">Pricing</a>
+                <a href="#">Security</a>
+                <a href="#">API</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Company</h3>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Team</a>
+                <a href="#">Careers</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <a href="#">Docs</a>
+                <a href="#">FAQ</a>
+                <a href="#">Support</a>
+                <a href="#">Status</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Compliance</a>
+                <a href="#">Disclaimers</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 K2 Quant. All rights reserved. | Built in Montréal</p>
+        </div>
+    </footer>
+</body>
+</html>
