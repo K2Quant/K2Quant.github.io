@@ -464,11 +464,26 @@
             gap: 60px;
             max-width: 1200px;
             margin: 0 auto;
+            justify-items: center;
         }
         
         .team-member {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .team-member-image {
+            width: 250px;
+            height: 250px;
+            background-color: #eee;
+            border-radius: 50%;
+            margin-bottom: 40px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .team-member-name {
@@ -921,6 +936,9 @@
         <div class="team-grid">
             <!-- Elahe Kooshafar -->
             <div class="team-member">
+                <div class="team-member-image" style="padding-top: 10px">
+                    <img src="assets/images/ekahe-koshafar-ceo.jpg" height="110%"/>
+                </div>
                 <h3 class="team-member-name">Elahe Kooshafar</h3>
                 <p class="team-member-title">CEO</p>
                 <p class="team-member-bio">AI researcher and entrepreneur focused on risk modeling and institutional finance. Leads K2 Quant's mission to bring institutional-grade capital preservation and risk management to digital asset markets.</p>
@@ -942,6 +960,9 @@
             
             <!-- Mohammad Bayat -->
             <div class="team-member">
+                <div class="team-member-image">
+                    <img src="assets/images/mohammad-bayat-cto.jpg" height="100%"/>
+                </div>
                 <h3 class="team-member-name">Mohammad Bayat</h3>
                 <p class="team-member-title">CTO</p>
                 <p class="team-member-bio">15+ years in quantitative finance and full-stack engineering. Built K2 Quant's proprietary risk infrastructure combining market structure analysis, AI-driven capital allocation, and systematic exposure control.</p>
