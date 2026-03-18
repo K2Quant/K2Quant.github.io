@@ -1065,9 +1065,19 @@
         }
         
         const contactForm = document.getElementById('contactForm');
+        const contactSubmitButton = contactForm.querySelector('.form-submit');
+        let isSubmittingContactForm = false;
 
         contactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
+
+            if (isSubmittingContactForm) {
+                return;
+            }
+
+            isSubmittingContactForm = true;
+            contactSubmitButton.disabled = true;
+            contactSubmitButton.textContent = 'Sending...';
 
             const formData = new FormData(contactForm);
 
@@ -1087,6 +1097,10 @@
                 }
             } catch (error) {
                 alert('Connection error. Please try again later.');
+            } finally {
+                isSubmittingContactForm = false;
+                contactSubmitButton.disabled = false;
+                contactSubmitButton.textContent = 'Send Inquiry';
             }
         });
         
