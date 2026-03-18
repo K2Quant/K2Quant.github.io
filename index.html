@@ -93,12 +93,14 @@
         /* HERO SECTION */
         .hero {
             background: linear-gradient(135deg, var(--gray-light) 0%, white 100%);
-            padding: 120px 40px;
+            padding: 0 40px;
             text-align: center;
             background: black;
             color: white;
             position: relative;
             overflow: hidden;
+
+            height: calc(100vh - 80px);
         }
 
         .hero-background {
@@ -110,16 +112,7 @@
             touch-action: none;
             z-index: 0;
         }
-        
-        .hero-logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
+
         h1 {
             font-size: 56px;
             font-weight: 700;
@@ -864,11 +857,11 @@
     <!-- HERO -->
     <section class="hero" id="hero">
         <canvas id="scene" class="hero-background"></canvas>
-        <div class="overlay" style="transform: translateY(-8%);">
+        <div class="overlay" style="transform: translateY(-20%);">
             <div class="glow-core"></div>
         </div>
 
-        <div style="width: 100%; z-index: 1; position: relative">
+        <div style="width: 100%; z-index: 1; position: absolute; bottom: 10%">
             <h1 style="margin-top: 150px">Capital First<br>Risk Management Precision</h1>
             <p class="hero-subtitle">Institutional-grade algorithmic trading infrastructure with capital preservation as the primary objective. Disciplined risk controls, systematic strategy deployment, and your assets always in your control.</p>
             <div class="hero-buttons">
@@ -1232,7 +1225,7 @@
         const pointer = new THREE.Vector2(0, 0);
         const targetRotation = new THREE.Vector2(0, 0);
 
-        const sourceGeometry = new THREE.IcosahedronGeometry(2.4, 35);
+        const sourceGeometry = new THREE.IcosahedronGeometry(2, 30);
         const geometry = sourceGeometry.clone();
         const positions = geometry.attributes.position;
         const colorMix = new Float32Array(positions.count);
